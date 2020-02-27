@@ -18,7 +18,7 @@
 
       const asyncGet = async target => {
         const data = JSON.parse(sessionStorage.getItem(target));
-        return data;
+        return data || [];
       };
 
       const asyncPost = async (target, payload = {}) => {
