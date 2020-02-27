@@ -31,8 +31,9 @@
         const [notActive, setNotActive] = useState([]);
         const [title, setTitle] = useState("");
 
-        useEffect(() => {
-          asyncGet("todos").then(data => setTodos(data));
+        useEffect(async () => {
+          const data = await asyncGet("todos");
+          setTodos(data);
         }, []);
 
         useEffect(() => {
