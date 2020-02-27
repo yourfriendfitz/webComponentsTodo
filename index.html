@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>lit-html To-Do App</title>
+  </head>
+
+  <body style="height: 100vh; width: 100vw;">
+    <todo-app></todo-app>
+    <script type="module">
+      import { html } from "https://unpkg.com/lit-html/lit-html.js";
+      import {
+        component,
+        useState,
+        useEffect
+      } from "https://unpkg.com/haunted/haunted.js";
+
+      const asyncGet = async target => {
+        const data = JSON.parse(sessionStorage.getItem(target));
+        return data;
+      };
+
+      const asyncPost = async (target, payload = {}) => {
+        sessionStorage.setItem(target, JSON.stringify(payload));
+      };
+
+      const Todo = () => {
+        const [todos, setTodos] = useState([]);
+        const [active, setActive] = useState([]);
+        const [notActive, setNotActive] = useState([]);
+        const [title, setTitle] = useState("");
+
+        useEffect(() => {
+          asyncGet("todos").then(data => setTodos(data));
+        }, []);
+
+        useEffect(() => {
+          setActive(todos.filter(({ isActive }) => isActive === true));
+          setNotActive(todos.filter(({ isActive }) => !isActive));
+          asyncPost("todos", todos);
+        }, [todos]);
+
+        return html`
+          <link rel="stylesheet" href="styles.css" />
+          <div class="container">
+            <div class="addTodo">
+              <input
+                id="title"
+                type="text"
+                @change=${e => setTitle(e.target.value)}
+              />
+              <button
+                type="button"
+                @click=${() => setTodos([...todos, { title, isActive: true }])}
+              >
+                ✔
+              </button>
+            </div>
+            <div id="todos">
+              <ul>
+                <h1>In Progress</h1>
+                ${active.map(
+                  (todo, index) => html`
+                    <li>
+                      <button
+                        @click=${() =>
+                          setTodos([...todos.filter(x => x !== todo)])}
+                      >
+                        ❌
+                      </button>
+                      <h3>${todo.title}</h3>
+                      <button
+                        @click=${() =>
+                          setTodos([
+                            ...todos.filter(x => x !== todo),
+                            { ...todo, isActive: false }
+                          ])}
+                      >
+                        ✔
+                      </button>
+                    </li>
+                  `
+                )}
+                <h1>Complete</h1>
+                ${notActive.map(
+                  (todo, index) => html`
+                    <li>
+                      <button
+                        @click=${() =>
+                          setTodos([...todos.filter(x => x !== todo)])}
+                      >
+                        ❌
+                      </button>
+                      <h3 class="strikethrough">${todo.title}</h3>
+                      <button
+                        @click=${() =>
+                          setTodos([
+                            ...todos.filter(x => x !== todo),
+                            { ...todo, isActive: true }
+                          ])}
+                      >
+                        ➖
+                      </button>
+                    </li>
+                  `
+                )}
+              </ul>
+            </div>
+          </div>
+        `;
+      };
+
+      customElements.define("todo-app", component(Todo));
+    </script>
+  </body>
+  <style>
+    :root {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    }
+
+    body {
+      background-image: -webkit-gradient(
+        linear,
+        left top,
+        right bottom,
+        from(#80bfad),
+        to(#d9d7d7)
+      );
+      background-image: linear-gradient(to right bottom, #80bfad, #d9d7d7);
+    }
+  </style>
+</html>

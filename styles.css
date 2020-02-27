@@ -1,0 +1,98 @@
+.container {
+  display: -ms-grid;
+  display: grid;
+  margin: auto;
+  padding: 10%;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.container #todos,
+.container .addTodo {
+  display: -ms-grid;
+  display: grid;
+  margin: auto;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 320px;
+}
+
+.container .addTodo input,
+.container .addTodo button {
+  margin: 4px;
+  -webkit-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+          box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.container h1 {
+  text-align: center;
+}
+
+.container ul {
+  list-style: none;
+  display: -ms-grid;
+  display: grid;
+  margin: auto;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0px;
+  width: 100%;
+}
+
+.container li {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: black 1px solid;
+  border-radius: 8px;
+  width: 320px;
+  -webkit-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+          box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+  margin: 4px;
+}
+
+.container li button,
+.container li h3 {
+  margin: 8px;
+}
+
+.container li h3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.container li h3:hover {
+  overflow: auto;
+  text-overflow: initial;
+}
+
+.container li button {
+  width: 32px;
+  background-color: white;
+  -webkit-box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+          box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.container li .strikethrough {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+/*# sourceMappingURL=styles.css.map */
