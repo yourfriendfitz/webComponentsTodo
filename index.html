@@ -25,7 +25,41 @@
         sessionStorage.setItem(target, JSON.stringify(payload));
       };
 
-      const Todo = () => {
+      class TodoBuilder {
+        static instance;
+        constructor() {
+          this.isActive = true;
+        }
+        static getInstance() {
+          if (TodoBuilder.instance) {
+            return TodoBuilder.instance;
+          }
+          TodoBuilder.instance = new TodoBuilder();
+          return TodoBuilder.instance;
+        }
+        setTitle(title) {
+          this.title = title;
+          return this;
+        }
+        build() {
+          return new Todo(this);
+        }
+      }
+
+      class Todo {
+        constructor(builder) {
+          for (let key in builder) {
+            this[key] = builder[key];
+          }
+        }
+      }
+
+      const createTodo = props => {
+        const builder = TodoBuilder.getInstance();
+        return builder.setTitle(props.title).build();
+      };
+
+      const TodoApp = () => {
         const [todos, setTodos] = useState([]);
         const [active, setActive] = useState([]);
         const [notActive, setNotActive] = useState([]);
@@ -53,7 +87,7 @@
               />
               <button
                 type="button"
-                @click=${() => setTodos([...todos, { title, isActive: true }])}
+                @click=${() => setTodos([...todos, createTodo({ title })])}
               >
                 ✔
               </button>
@@ -111,8 +145,8 @@
           </div>
         `;
       };
-
-      customElements.define("todo-app", component(Todo));
+      customElements.define("todo-app", component(TodoApp));
+      export { TodoApp, Todo, TodoBuilder, createTodo, asyncGet, asyncPost };
     </script>
   </body>
   <style>
